@@ -7,8 +7,8 @@
 """
 from torch import nn
 from torch.nn import functional as F
-# from model.transformer import Encoder, EncoderLayer, MultiHeadedAttention, PositionWiseFeedForward, PositionalEncoding
-from model.transformer import PositionalEncoding
+# from model.source_code import Encoder, EncoderLayer, MultiHeadedAttention, PositionWiseFeedForward, PositionalEncoding
+from model.source_code import PositionalEncoding
 from einops.layers.torch import Rearrange
 
 
@@ -21,7 +21,7 @@ class EEGModel(nn.Module):
         self.pre_linear = nn.Linear(in_features=96 * 16, out_features=64, bias=True)
 
         self.pe = PositionalEncoding(embed_len=64, dropout=0, max_seq_len=64)
-        # Encoder of transformer
+        # Encoder of source_code
         # attn = MultiHeadedAttention(n_head=8, d_model=64, dropout=0.2)
         # ff = PositionWiseFeedForward(d_model=64, d_ff=256, dropout=0.2)
         # self.encoder = Encoder(EncoderLayer(64, attn, ff, dropout=0.2), N=5)

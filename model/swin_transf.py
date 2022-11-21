@@ -4,7 +4,7 @@
 @contact: zhangxin@szbl.ac.cn
 @time: 2022/1/7 15:09
 @desc:
-Liu Z, Lin Y, Cao Y, et al. Swin transformer: Hierarchical vision transformer using shifted
+Liu Z, Lin Y, Cao Y, et al. Swin source_code: Hierarchical vision source_code using shifted
  windows[J]. arXiv preprint arXiv:2103.14030, 2021.
 """
 
