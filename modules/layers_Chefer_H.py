@@ -46,6 +46,7 @@ class RelProp(nn.Module):
     def relprop(self, R, alpha):
         return R
 
+
 class RelPropSimple(RelProp):
     def relprop(self, R, alpha):
         Z = self.forward(self.X)
@@ -60,22 +61,28 @@ class RelPropSimple(RelProp):
             outputs = self.X * (C[0])
         return outputs
 
+
 class AddEye(RelPropSimple):
     # input of shape B, C, seq_len, seq_len
     def forward(self, input):
         return input + torch.eye(input.shape[2]).expand_as(input).to(input.device)
 
+
 class ReLU(nn.ReLU, RelProp):
     pass
+
 
 class GELU(nn.GELU, RelProp):
     pass
 
+
 class Softmax(nn.Softmax, RelProp):
     pass
 
+
 class LayerNorm(nn.LayerNorm, RelProp):
     pass
+
 
 class Dropout(nn.Dropout, RelProp):
     pass
@@ -84,8 +91,10 @@ class Dropout(nn.Dropout, RelProp):
 class MaxPool2d(nn.MaxPool2d, RelPropSimple):
     pass
 
+
 class LayerNorm(nn.LayerNorm, RelProp):
     pass
+
 
 class AdaptiveAvgPool2d(nn.AdaptiveAvgPool2d, RelPropSimple):
     pass
@@ -120,12 +129,15 @@ class Add(RelPropSimple):
 
         return outputs
 
+
 class einsum(RelPropSimple):
     def __init__(self, equation):
         super().__init__()
         self.equation = equation
+
     def forward(self, *operands):
         return torch.einsum(self.equation, *operands)
+
 
 class IndexSelect(RelProp):
     def forward(self, inputs, dim, indices):
@@ -148,7 +160,6 @@ class IndexSelect(RelProp):
         return outputs
 
 
-
 class Clone(RelProp):
     def forward(self, input, num):
         self.__setattr__('num', num)
@@ -168,6 +179,7 @@ class Clone(RelProp):
         R = self.X * C
 
         return R
+
 
 class Cat(RelProp):
     def forward(self, inputs, dim):
@@ -191,6 +203,7 @@ class Sequential(nn.Sequential):
         for m in reversed(self._modules.values()):
             R = m.relprop(R, alpha)
         return R
+
 
 class BatchNorm2d(nn.BatchNorm2d, RelProp):
     def relprop(self, R, alpha):
@@ -279,4 +292,3 @@ class Conv2d(nn.Conv2d, RelProp):
 
             R = alpha * activator_relevances - beta * inhibitor_relevances
         return
-
